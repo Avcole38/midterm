@@ -1,5 +1,5 @@
 ---
-title: "BBall Stats Data Cleaning"
+title: "BBall Stats Scatterplot"
 author: "Cassandra Ortiz-Nelsen"
 date: "Monday, Nov 17, 2025"
 output: html_document
@@ -133,7 +133,10 @@ nba_pm_df <- nba_pm_df %>%
       TRUE ~ "Unknown"
     )
   )
+```
 
+
+```{r}
 # --- 6. Clean numeric columns ---
 numeric_cols <- setdiff(names(nba_pm_df), c("player", "position", "team"))
 nba_pm_df[numeric_cols] <- lapply(nba_pm_df[numeric_cols], function(x) as.numeric(gsub("%","", x)))
@@ -153,12 +156,15 @@ top_players <- nba_pm_df %>%
   arrange(desc(steal_foul_ratio)) %>%
   slice_head(n = 10)
 
-# --- 9b. Subset to only 1st, 3rd, 5th players to avoid overlapping labels ---
+# --- 9b. Only show 1st, 3rd, 5th players to avoid overlapping labels on plot ---
 top_players_subset <- top_players %>%
   slice(c(1, 3, 5))
 
+```
 
-# --- 10. Candy-colored scatterplot ---
+
+```{r}
+# --- 10. scatterplot ---
 ggplot(nba_pm_df, aes(x = pf, y = steal_foul_ratio, color = position)) +
   geom_point(alpha = 0.7, size = 2.5, position = position_jitter(width = 0.2, height = 0)) +
   geom_text(
