@@ -55,4 +55,4 @@ ggplot(avg_by_pos, aes(x = Pos, y = points_per_36, fill = shot_type)) +
   ) +
   scale_y_continuous(expand = c(0,0)) + 
   theme_light()
-
+saveRDS(avg_by_pos, file = "NBA_bargraph.R")
